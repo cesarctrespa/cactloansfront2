@@ -1,6 +1,6 @@
 <template>
   <div class="card justify-content-center">
-    <div class="card-body col-11 ">
+    <div class="card-body ">
       <div class="row mb-3"><h3>Simula tu préstamo</h3></div>
 
       <div class="row mb-1"><i class="icon fas fa-hand-holding-dollar p-0"/></div>
@@ -12,11 +12,11 @@
       </div>
       <div class="row align-self-center"><p class="notes">Ingresa tu valor de $100.000 en $100.000</p></div>
       <div class="row mb-4 justify-content-center">
-        <div class="col-3"><p class="values">$100.000</p></div>
-        <div class="col-6">
+        <div class="col-3 col-sm-3 p-0"><p class="values">$100.000</p></div>
+        <div class="col-6 col-sm-6">
           <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
         </div>
-        <div class="col-3"><p class="values">$25.000.000</p></div>
+        <div class="col-3 col-sm-3 p-0"><p class="values">$25.000.000</p></div>
       </div>
 
       <div class="row mb-1"><i class="icon fas fa-calendar-days p-0"/></div>
@@ -87,10 +87,10 @@
     border: 1px #F1F1F1;
     border-bottom-style: solid;
     text-align: center; 
-    font-size: 1.5vw;
+    font-size:calc(8px + 1.5vw);
   }
   .values {
-    font-size: 1.5vw;  
+    font-size:calc(5px + 1.5vw);  
   }
   .slider {
     -webkit-appearance: none;
@@ -108,13 +108,13 @@
   .slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 25px;
+    width: calc(10px + 1.5vw);
     height: 25px;
     background: #9dc9dd;
     cursor: pointer;
   }
   .slider::-moz-range-thumb {
-    width: 25px;
+    width: calc(10px + 1.5vw);
     height: 25px;
     background: #9dc9dd;
     cursor: pointer;
@@ -125,9 +125,11 @@
       border: 1px #F1F1F1;
       border-bottom-style: solid;
       text-align: center; 
-      font-size: 1.5vw;
+      font-size:calc(8px + 1.5vw);
       margin-top: auto;
+      width: 100%;
     }
+    font-size:calc(6px + 1.5vw);
   }
 
   input[type="text"]:focus,
