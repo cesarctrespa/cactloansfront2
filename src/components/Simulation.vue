@@ -10,13 +10,13 @@
           <input type="number" class="form-control number" id="amount" placeholder="000000" step="100000" min="100000" max="25000000">
         </div>
       </div>
-      <div class="row align-self-center"><p class="notes">Ingresa tu valor de $100.000 en $100.000</p></div>
-      <div class="row mb-4 justify-content-center">
-        <div class="col-3 col-sm-3 p-0"><p class="values">$100.000</p></div>
+      <div class="row"><p class="notes">Ingresa tu valor de $100.000 en $100.000</p></div>
+      <div class="row mb-2">
+        <div class="col-3 col-sm-3 mt-1"><p class="values">$100.000</p></div>
         <div class="col-6 col-sm-6">
           <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
         </div>
-        <div class="col-3 col-sm-3 p-0"><p class="values">$25.000.000</p></div>
+        <div class="col-3 col-sm-3 mt-1"><p class="values">$25.000.000</p></div>
       </div>
 
       <div class="row mb-1"><i class="icon fas fa-calendar-days p-0"/></div>
@@ -26,7 +26,7 @@
           <label class="notes mb-1">Fecha primera cuota</label>
           <div class="row justify-content-center">
             <div class="col-1 mt-auto"><i class="icon fas fa-calendar-check"/></div>
-            <div class="col-6"><datepicker v-model="picked" /></div>   
+            <div class="col-6"><datepicker v-model="picked" inputFormat="dd/MM/yyyy"/></div>   
           </div>
         </div>
         <div class="col-12 col-sm-6">
@@ -37,6 +37,32 @@
           </div>
         </div>
       </div>
+
+      <div class="row mb-1"><i class="icon fas fa-circle-info p-0"/></div>
+      <div class="row align-self-center"><p class="questions">Así quedaría tu préstamo</p></div>
+      <div class="row mb-3 justify-content-center">
+        <div class="row">
+          <div class="col-7 col-sm-6 align-self-center"><p class="label-informative text-end mb-1">La plata que necesitas</p></div>
+          <div class="col-5 col-sm-3"><input type="number" readonly class="form-control-plaintext informative pt-0 pb-0" id="amount" value="00000"></div>
+        </div>
+        <div class="row">
+          <div class="col-7 col-sm-6 align-self-center"><p class="label-informative text-end mb-1">Los intereses</p></div>
+          <div class="col-5 col-sm-3"><input type="number" readonly class="form-control-plaintext informative pt-0 pb-0" id="interest" value="00000"></div>
+        </div>
+        <div class="row">
+          <div class="col-7 col-sm-6 align-self-center"><p class="label-informative text-end fw-bold mb-1">Lo que pagarías en total</p></div>
+          <div class="col-5 col-sm-3"><input type="number" readonly class="form-control-plaintext informative pt-0 pb-0" id="total" value="00000"></div>
+        </div>
+        <div class="row">
+          <div class="col-7 col-sm-6 align-self-center"><p class="label-informative text-end fw-bold mb-1">Fecha límite del pago total</p></div>
+          <div class="col-5 col-sm-5"><input type="date" readonly class="form-control-plaintext informative pt-0 pb-0" id="limitDate" value="2022-06-18"></div>        
+        </div>
+      </div>
+
+      <button class="btn btn-primary" type="submit">Ir al plan de pago</button>
+
+      <div class="container row align-self-center p-3"><p class="notes mb-0">Los resultados de esta simulación son de uso informativo y aproximado. Los valores podrán variar de acuerdo a las políticas de estudio, los intereses se liquidarán con la tasa vigente al momento del desembolso.</p></div>
+      
     </div>
   </div>
 </template>
@@ -70,14 +96,32 @@
 
 <style lang="scss">
   .card {
-    border-radius: 1rem;
-    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.1);
+    border-radius: 1.5rem !important;
+    -webkit-box-shadow: 0 0 5px 4px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 0 5px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 5px 4px rgba(0, 0, 0, 0.1);
   }
   h3 {
     font-weight: 700;
   }
+  .btn-primary {
+    background: linear-gradient(to right, #ED1826 50%, #da1623);
+    border-radius: 1.5rem !important;
+    border: none !important;
+    font-family: 'Roboto' !important;
+    font-size:calc(7px + 0.7vw) !important;
+  }
+  .btn-primary:focus {   
+    border: none !important;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px #ED1826 !important;
+    outline: 0 none !important;
+  }
   .questions {
     font-weight: 300;
+  }
+  .label-informative {
+    font-weight: 300;
+    font-size:calc(7px + 0.75vw);
   }
   .notes {
     font-weight: 300;
@@ -86,11 +130,11 @@
   .form-control.number {
     border: 1px #F1F1F1;
     border-bottom-style: solid;
-    text-align: center; 
-    font-size:calc(8px + 1.5vw);
+    text-align: center;
+    font-size:calc(8px + 1vw);
   }
-  .values {
-    font-size:calc(5px + 1.5vw);  
+  .form-control-plaintext.informative, .values {
+      font-size:calc(5px + 1vw);
   }
   .slider {
     -webkit-appearance: none;
@@ -125,11 +169,11 @@
       border: 1px #F1F1F1;
       border-bottom-style: solid;
       text-align: center; 
-      font-size:calc(8px + 1.5vw);
+      font-size:calc(8px + 1vw);
       margin-top: auto;
       width: 100%;
     }
-    font-size:calc(6px + 1.5vw);
+    font-size:calc(6px + 0.72vw);
   }
 
   input[type="text"]:focus,
