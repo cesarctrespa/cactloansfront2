@@ -271,7 +271,7 @@
       margin-top: auto;
       width: 100%;
     }
-    font-size:calc(8px + 0.72vw);
+    font-size:calc(9px + 0.75vw);
   }
   input[type="text"]:focus,
   input[type="number"]:focus {   
