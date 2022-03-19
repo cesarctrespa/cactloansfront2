@@ -1,4 +1,4 @@
-<template>
+<template v-if="form">
   <div class="card justify-content-center">
     <div class="card-body ">
       <div class="row mb-3"><h3>Simula tu préstamo</h3></div>
@@ -7,16 +7,16 @@
       <div class="row align-self-center"><p class="questions">¿Cuánta plata necesitas?</p></div>
       <div class="row mb-3 justify-content-center">
         <div class="col-11 col-sm-7 col-md-5">
-          <input type="number" class="form-control number" id="amount" placeholder="000000" step="100000" min="100000" max="25000000">
+          <input type="number" class="form-control number" id="amount" v-model="form.amount" placeholder="0" :min="amountLimits.min" :max="amountLimits.max" :step="amountLimits.step" @keyup="FixNumber()">
         </div>
       </div>
-      <div class="row"><p class="notes">Ingresa tu valor de $100.000 en $100.000</p></div>
+      <div class="row"><p class="notes">Ingresa tu valor de {{NumberFormat(amountLimits.step)}} en {{NumberFormat(amountLimits.step)}}</p></div>
       <div class="row mb-2">
-        <div class="col-3 col-sm-3 mt-1"><p class="values">$100.000</p></div>
+        <div class="col-3 col-sm-3 mt-1"><p class="values">{{NumberFormat(amountLimits.min)}}</p></div>
         <div class="col-6 col-sm-6">
-          <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+          <input type="range" class="slider" :min="amountLimits.min" :max="amountLimits.max" :step="amountLimits.step" id="amountRange" v-model="form.amount">
         </div>
-        <div class="col-3 col-sm-3 mt-1"><p class="values">$25.000.000</p></div>
+        <div class="col-3 col-sm-3 mt-1"><p class="values">{{NumberFormat(amountLimits.max)}}</p></div>
       </div>
 
       <div class="row mb-1"><i class="icon fas fa-calendar-days p-0"/></div>
@@ -42,59 +42,100 @@
       <div class="row align-self-center"><p class="questions">Así quedaría tu préstamo</p></div>
       <div class="row mb-3 justify-content-center">
         <div class="row">
-          <div class="col-7 col-sm-6 align-self-center"><p class="label-informative text-end mb-1">La plata que necesitas</p></div>
-          <div class="col-5 col-sm-3"><input type="number" readonly class="form-control-plaintext informative pt-0 pb-0" id="amount" value="00000"></div>
+          <div class="col-7 col-sm-6 align-self-center">
+            <p class="label-informative text-end mb-1">La plata que necesitas</p>
+          </div>
+          <div class="col-5 col-sm-3">
+            <input type="text" readonly class="form-control-plaintext informative pt-0 pb-0" id="amount" :value="NumberFormat(form.amount)">
+          </div>
         </div>
         <div class="row">
-          <div class="col-7 col-sm-6 align-self-center"><p class="label-informative text-end mb-1">Los intereses</p></div>
-          <div class="col-5 col-sm-3"><input type="number" readonly class="form-control-plaintext informative pt-0 pb-0" id="interest" value="00000"></div>
+          <div class="col-7 col-sm-6 align-self-center">
+            <p class="label-informative text-end mb-1">Los intereses</p>
+          </div>
+          <div class="col-5 col-sm-3">
+            <input type="text" readonly class="form-control-plaintext informative pt-0 pb-0" id="interest" :value="NumberFormat(form.interest)">
+          </div>
         </div>
         <div class="row">
-          <div class="col-7 col-sm-6 align-self-center"><p class="label-informative text-end fw-bold mb-1">Lo que pagarías en total</p></div>
-          <div class="col-5 col-sm-3"><input type="number" readonly class="form-control-plaintext informative pt-0 pb-0" id="total" value="00000"></div>
+          <div class="col-7 col-sm-6 align-self-center">
+            <p class="label-informative text-end fw-bold mb-1">Lo que pagarías en total</p>
+          </div>
+          <div class="col-5 col-sm-3">
+            <input type="text" readonly class="form-control-plaintext informative pt-0 pb-0" id="total" :value="NumberFormat(form.total)">
+          </div>
         </div>
         <div class="row">
-          <div class="col-7 col-sm-6 align-self-center"><p class="label-informative text-end fw-bold mb-1">Fecha límite del pago total</p></div>
-          <div class="col-5 col-sm-5"><input type="date" readonly class="form-control-plaintext informative pt-0 pb-0" id="limitDate" value="2022-06-18"></div>        
+          <div class="col-7 col-sm-6 align-self-center">
+            <p class="label-informative text-end fw-bold mb-1">Cantidad de cuotas</p>
+          </div>
+          <div class="col-5 col-sm-3">
+            <input type="text" readonly class="form-control-plaintext informative pt-0 pb-0" id="installments" :value="form.installments">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-7 col-sm-6 align-self-center">
+            <p class="label-informative text-end fw-bold mb-1">Fecha límite del pago total</p>
+          </div>
+          <div class="col-5 col-sm-5">
+            <input type="text" readonly class="form-control-plaintext informative pt-0 pb-0" id="limitDate" :value="form.limitDate">
+          </div>        
         </div>
       </div>
 
       <button class="btn btn-primary" type="submit">Ir al plan de pago</button>
 
-      <div class="container row align-self-center p-3"><p class="notes mb-0">Los resultados de esta simulación son de uso informativo y aproximado. Los valores podrán variar de acuerdo a las políticas de estudio, los intereses se liquidarán con la tasa vigente al momento del desembolso.</p></div>
+      <div class="container row align-self-center p-3"><p class="notes mb-0">Los resultados de esta simulación son de uso informativo y aproximado. Los valores podrán variar ya que los intereses se liquidarán con la tasa vigente al momento del desembolso.</p></div>
       
     </div>
   </div>
 </template>
 
 <script>
+  import Datepicker from 'vue3-datepicker'
+  import { ref } from "vue";
+
   export default {
     name: 'Simulation',
+    components: {
+      Datepicker
+    },
+    setup() {
+      let amountLimits = ref({ min: 100000, max: 25000000, step: 50000 });
+      let form = ref({ amount:100000, total:12700000, interest:100000, installments: 24, limitDate:"18/06/2024" });
+      let picked = ref(new Date());
+
+      return { form, picked, amountLimits };
+    },
+    computed: {
+      NumberFormat() { // Method to add points to the thousands
+        return (v)=>{
+          return "$ " + v.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+        }
+      },
+      FixNumber() { // Method to fix numbers related to amount
+        return ()=>{
+          clearTimeout(undefined);
+          setTimeout(()=>{
+            let result = Math.round(this.form.amount/this.amountLimits.step)*this.amountLimits.step;
+            if (result>this.amountLimits.max)
+              this.form.amount = this.amountLimits.max;
+            else if (result<this.amountLimits.min)
+              this.form.amount = this.amountLimits.min;
+            else
+              this.form.amount = result;
+          }, 4000);
+        }
+      }
+    }
   }
-
-  /*var slider = document.getElementById("myRange");
-  var output = document.getElementById("demo");
-  output.innerHTML = slider.value; // Display the default slider value
-
-  // Update the current slider value (each time you drag the slider handle)
-  slider.oninput = function() {
-    output.innerHTML = this.value;
-  }*/
-</script>
-<script setup>
-  import Datepicker from 'vue3-datepicker'
-  import { ref } from 'vue'
-  const picked = ref(new Date())
 </script>
 
-<style>
+<style lang="scss">
   :root {
     --vdp-hover-bg-color : #9dc9dd;
     --vdp-selected-bg-color: #9dc9dd;
   }
-</style>
-
-<style lang="scss">
   .card {
     border-radius: 1.5rem !important;
     -webkit-box-shadow: 0 0 5px 4px rgba(0, 0, 0, 0.1);
@@ -109,7 +150,7 @@
     border-radius: 1.5rem !important;
     border: none !important;
     font-family: 'Roboto' !important;
-    font-size:calc(7px + 0.7vw) !important;
+    font-size:calc(10px + 0.7vw) !important;
   }
   .btn-primary:focus {   
     border: none !important;
@@ -173,7 +214,7 @@
       margin-top: auto;
       width: 100%;
     }
-    font-size:calc(6px + 0.72vw);
+    font-size:calc(8px + 0.72vw);
   }
 
   input[type="text"]:focus,

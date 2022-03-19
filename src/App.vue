@@ -17,8 +17,8 @@
 <template>
   <div class="container">
     <Sidebar />
-    <router-view />
-    <!--<div :style="{ 'margin-left': sidebarWidth }">
+    <router-view/>
+    <!--<div :style="{ 'margin-left': sidebarWidth } style="background-color: rgba(0,0,0,0.2);"">
       <router-view />
     </div>-->
   </div>
@@ -27,8 +27,8 @@
 
 <style>
   .container {
-    padding-top: calc(10px + 2vh);
-    padding-bottom: calc(10px + 2vh);
+    padding-top: calc(5px + 2vh);
+    padding-bottom: calc(5px + 2vh);
   }
   #app {
     font-family: 'Roboto';
