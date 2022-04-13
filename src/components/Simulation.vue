@@ -1,6 +1,6 @@
 <template v-if="form">
   <div class="card justify-content-center">
-    <div class="card-body ">
+    <div class="card-body">
       <div class="row mb-3"><h3>Simula tu préstamo</h3></div>
 
       <div class="row mb-1"><i class="icon fas fa-hand-holding-dollar p-0"/></div>
@@ -118,7 +118,7 @@
     },
     setup() {
       let amountLimits = ref({ min: 100000, max: 25000000, step: 1000, maxInstPaymentStep: 1000 });
-      let form = ref({ amount: 100000, total: 12700000, maxInstPayment: 100000 , firstDate: new Date(), interest: 100000, installments: 24, limitDate: "18/06/2024" });
+      let form = ref({ amount: 100000, total: 12700000, maxInstPayment: 0 , firstDate: new Date(), interest: 100000, installments: 24, limitDate: "18/06/2024" });
       let controls = ref({ amount: false, maxInstPayment: false});
 
       function changeControlStatus(controlName) {
@@ -271,7 +271,7 @@
       margin-top: auto;
       width: 100%;
     }
-    font-size:calc(9px + 0.75vw);
+    font-size:calc(9px + 0.9vw);
   }
   input[type="text"]:focus,
   input[type="number"]:focus {   
